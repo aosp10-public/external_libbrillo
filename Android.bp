@@ -148,6 +148,9 @@ cc_library {
         android: {
             srcs: libbrillo_linux_sources,
         },
+        darwin: {
+            enabled: false
+        }
     },
 }
 
