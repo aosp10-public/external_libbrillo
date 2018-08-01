@@ -17,6 +17,7 @@
 # We su shell because process tests try setting "illegal"
 # uid/gids and expecting failures, but root can legally
 # set those to any value.
+.PHONY: runtargettests
 runtargettests: libbrillo_test
 	adb sync
 	adb shell su shell /data/nativetest/libbrillo_test/libbrillo_test
