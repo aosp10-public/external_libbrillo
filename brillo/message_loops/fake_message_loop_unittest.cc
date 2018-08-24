@@ -95,15 +95,14 @@ TEST_F(FakeMessageLoopTest, WatchFileDescriptorWaits) {
       Bind([](int* called) { (*called)++; }, base::Unretained(&called)));
   EXPECT_NE(MessageLoop::kTaskIdNull, task_id);
 
-  auto callback = [](FakeMessageLoop* loop) { loop->BreakLoop(); };
-  EXPECT_NE(
-      MessageLoop::kTaskIdNull,
-      loop_->PostDelayedTask(Bind(callback, base::Unretained(loop_.get())),
-                             TimeDelta::FromSeconds(10)));
-  EXPECT_NE(
-      MessageLoop::kTaskIdNull,
-      loop_->PostDelayedTask(Bind(callback, base::Unretained(loop_.get())),
-                             TimeDelta::FromSeconds(20)));
+  EXPECT_NE(MessageLoop::kTaskIdNull,
+            loop_->PostDelayedTask(Bind(&FakeMessageLoop::BreakLoop,
+                                        base::Unretained(loop_.get())),
+                                   TimeDelta::FromSeconds(10)));
+  EXPECT_NE(MessageLoop::kTaskIdNull,
+            loop_->PostDelayedTask(Bind(&FakeMessageLoop::BreakLoop,
+                                        base::Unretained(loop_.get())),
+                                   TimeDelta::FromSeconds(20)));
   loop_->Run();
   EXPECT_EQ(0, called);
 
